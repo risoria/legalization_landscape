@@ -91,38 +91,6 @@
 
 
 
-
-
-
-
-        
-/* 
-            //load external data
-            d3.queue()
-              .defer(d3.json, "https://gist.githubusercontent.com/risoria/d00dd9dc3d1eb1de10d3356ebc4efff7/raw/325fcca432e7bd9ce29eec73b01c88f6c1970e01/modified_state_shapes.geojson")    
-              .defer(d3.csv, "https://gist.githubusercontent.com/risoria/42d26398cf5b561f954c573ebc87b39f/raw/3199fb56bd8ece8ccfaead331a46afedc0452d5a/legal_status.csv", function(d){data.set(d.abbr, +d.status_code); })                                                                                                                                                                    
-              .await(ready)
-               
-
-            function ready(error, topo){
-                //Draw the map
-                svg.append('g')
-                   .selectAll('path')
-                   .data(topo.features)
-                   .enter()
-                   .append('path')
-                   //draw each state
-                    .attr('d', d3.geoPath()
-                    .projection(albersProjection)
-                    )
-                   //set color for each state
-                   .attr('fill', function(d){
-                        d.total = data.get(d.id) || 0;
-                        return colorScale(d.total);
-
-                   });
-            } */
-         
         </script>
 
 
