@@ -1,0 +1,52 @@
+state,abbr,legalization_status,status_code
+Alabama,AL,limited access medical law,2
+Alaska,AK,both legal,6
+Arizona,AZ,only medical ,5
+Arkansas,AR,only medical ,5
+California,CA,both legal,6
+Colorado,CO,both legal,6
+Connecticut,CT,medical legal and adult use decriminalized,4
+District of Columbia,DC,both legal,6
+Delaware,DE,medical legal and adult use decriminalized,4
+Florida,FL,only medical,5
+Georgia,GA,limited access medical law,2
+Hawaii,HI,medical legal and adult use decriminalized,4
+Idaho,ID,both banned,0
+Illinois,IL,both legal,6
+Indiana,IN,limited access medical law,2
+Iowa,IA,limited access medical law,2
+Kansas,KS,limited access medical law,2
+Kentucky,KY,limited access medical law,2
+Louisiana,LA,only medical,5
+Maine,ME,both legal,6
+Maryland,MD,medical legal and adult use decriminalized,4
+Massachusetts,MA,both legal,6
+Michigan,MI,both legal,6
+Minnesota,MN,medical legal and adult use decriminalized,4
+Mississippi,MS,adult use decriminalized but limited medical,3
+Missouri,MO,medical legal and adult use decriminalized,4
+Montana,MT,only medical,5
+Nebraska,NE,decriminalized,1
+Nevada,NV,both legal,6
+New Hampshire,NH,medical legal and adult use decriminalized,4
+New Jersey,NJ,only medical,5
+New Mexico,NM,medical legal and adult use decriminalized,4
+New York,NY,medical legal and adult use decriminalized,4
+North Carolina,ND,adult use decriminalized but limited medical,3
+North Dakota,NC,medical legal and adult use decriminalized,4
+Ohio,OH,medical legal and adult use decriminalized,4
+Oklahoma,OK,only medical,5
+Oregon,OR,both legal,6
+Pennsylvania,PA,only medical,5
+Rhode Island,RI,medical legal and adult use decriminalized,4
+South Carolina,SC,limited access medical law,2
+South Dakota,SD,both banned,0
+Tennessee,TN,limited access medical law,2
+Texas,TX,limited access medical law,2
+Utah,UT,only medical,5
+Vermont,VT,both legal,6
+Virginia,VA,limited access medical law,2
+Washington,WA,both legal,6
+West Virginia,WV,only medical,5
+Wisconsin,WI,limited access medical law,2
+Wyoming,WY,limited access medical law,2
