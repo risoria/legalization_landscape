@@ -1,0 +1,131 @@
+<html>
+    <head>
+        <title>Legalization Landscape</title>
+
+        <!-- Load d3.js -->
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+        <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+        
+
+      
+    </head>
+    <body>
+        <script type="text/javascript">
+            var width = 980;
+            var height = 650;
+
+            var svg = d3.select('body')
+                        .append('svg')
+                        .attr('width', width)
+                        .attr('height', height)
+            //map and projection 
+            var albersProjection = d3.geoAlbersUsa()
+                                     .scale(1300)
+                                     .translate([487.5, 305])
+            var path = d3.geoPath()
+                         .projection(albersProjection); 
+
+            //Data and color scale
+            var color = d3.scaleQuantize()
+                                //.domain([0,6])
+                                .range(["rgb(237,248,233)","rgb(186,228,179)","rgb(116,196,118)","rgb(49,163,84)","rgb(0,109,44)"]);
+            
+            //create svg element to hold my map
+            var svg = d3.select('body')
+                        .append('svg')
+                        .attr('width', width)
+                        .attr("height", height);
+
+
+
+            //load external data using alignedleft methods 
+            d3.csv("legal_masterboard.csv", function(data){
+                    //set input domain for color scale
+                    color.domain([
+                        d3.min(data, function(d) {return d.status_code;}),
+                        d3.max(data, function(d) {return d.status_code;})
+                    ]);
+                    //load in json data
+                    d3.json("state_shapes.geojson", function(json) {
+                        //merge the shapes to the csv
+                        for (var i = 0; i < data.length; i++) {
+                            //grab state name from csv
+                            var dataState = data[i].abbr;
+                            //grab value to visualize from csv and convert to float
+                            var dataValue = parseFloat(data[i].status_code); 
+                            //find the corresponding state inside the json
+                            for (var j = 0; j < json.features.length; j++) {
+                                var jsonState = json.features[j].properties.abbr;
+                                if (dataState == jsonState) {
+                                    //copy the data value into json
+                                    json.features[j].properties.status_code = dataValue;
+                                    //stop looking through json
+                                    break;
+                                }
+                            }
+                            console.log(dataState)
+                        }
+                        //bind data and create a path per json feature
+                        svg.selectAll('path')
+                           .data(json.features)
+                           .enter()
+                           .append('path')
+                           .attr('d', path)
+                           .style('fill', function(d) {
+                               //get data value
+                               var status_code = d.properties.status_code;
+
+                               if (status_code){
+                                   //if value exists..
+                                   return color(status_code);
+                               } else{
+                                   //if value is undefined
+                                   return '#bababa';
+                               }
+                           });
+
+                    });
+            });
+
+
+
+
+
+
+
+        
+/* 
+            //load external data
+            d3.queue()
+              .defer(d3.json, "https://gist.githubusercontent.com/risoria/d00dd9dc3d1eb1de10d3356ebc4efff7/raw/325fcca432e7bd9ce29eec73b01c88f6c1970e01/modified_state_shapes.geojson")    
+              .defer(d3.csv, "https://gist.githubusercontent.com/risoria/42d26398cf5b561f954c573ebc87b39f/raw/3199fb56bd8ece8ccfaead331a46afedc0452d5a/legal_status.csv", function(d){data.set(d.abbr, +d.status_code); })                                                                                                                                                                    
+              .await(ready)
+               
+
+            function ready(error, topo){
+                //Draw the map
+                svg.append('g')
+                   .selectAll('path')
+                   .data(topo.features)
+                   .enter()
+                   .append('path')
+                   //draw each state
+                    .attr('d', d3.geoPath()
+                    .projection(albersProjection)
+                    )
+                   //set color for each state
+                   .attr('fill', function(d){
+                        d.total = data.get(d.id) || 0;
+                        return colorScale(d.total);
+
+                   });
+            } */
+         
+        </script>
+
+
+    </body>
+
+
+</html>
