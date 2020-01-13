@@ -1,37 +1,46 @@
-<html>
+<!-- Modified from various tutorials including those by Scott Murray and Mike Bostock -->
+<html lang='en'>
     <head>
-	<meta content="utf-8" http-equiv="encoding">
+        <meta charset='utf-8'>
         <title>Legalization Landscape</title>
 
         <!-- Load d3.js -->
-        <script src="https://d3js.org/d3.v5.min.js"></script>
-		<style type="text/css">
-      
-		</style>
-        
-
-      
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+        <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
     </head>
+    
+    <style>
+            path {
+                fill-opacity: 0.8;
+                stroke: #fff;
+                stroke-width:0.8px;
+            }
+            path.active {
+                fill-opacity: 1;
+                stroke: #000;
+                stroke-width: 2px;
+            }
+        </style>
     <body>
-        <script type="text/javascript">
+        <script>
             var width = 980;
             var height = 650;
 
-            var svg = d3.select('body')
-                        .append('svg')
-                        .attr('width', width)
-                        .attr('height', height)
             //map and projection 
             var albersProjection = d3.geoAlbersUsa()
                                      .scale(1300)
-                                     .translate([487.5, 305])
+                                     .translate([485.5, 305])
             var path = d3.geoPath()
                          .projection(albersProjection); 
 
             //Data and color scale
             var color = d3.scaleQuantize()
-                                //.domain([0,6])
-                                .range(["rgb(237,248,233)","rgb(186,228,179)","rgb(116,196,118)","rgb(49,163,84)","rgb(0,109,44)"]);
+                            //.domain([0,6])
+                            //         decrim  | lim med | ban | mleg audecrim | medical | both
+                            .range(['#fff','#bababa','#ff94a0','#97999B','#c7eae5','#ff3366','#00949a'])
+                               
+
             
             //create svg element to hold my map
             var svg = d3.select('body')
@@ -42,20 +51,21 @@
 
 
             //load external data using alignedleft methods 
-            d3.csv("legal_masterboard.csv", function(data){
+            d3.csv("https://gist.githubusercontent.com/risoria/42d26398cf5b561f954c573ebc87b39f/raw/3199fb56bd8ece8ccfaead331a46afedc0452d5a/legal_status.csv", function(data){
                     //set input domain for color scale
                     color.domain([
                         d3.min(data, function(d) {return d.status_code;}),
                         d3.max(data, function(d) {return d.status_code;})
                     ]);
                     //load in json data
-                    d3.json("state_shapes.geojson", function(json) {
+                    d3.json("https://gist.githubusercontent.com/risoria/d00dd9dc3d1eb1de10d3356ebc4efff7/raw/325fcca432e7bd9ce29eec73b01c88f6c1970e01/modified_state_shapes.geojson", function(json) {
                         //merge the shapes to the csv
                         for (var i = 0; i < data.length; i++) {
                             //grab state name from csv
-                            var dataState = data[i].abbr;
+                            var dataState = data[i].id;
+                            console.log(dataState)
                             //grab value to visualize from csv and convert to float
-                            var dataValue = parseFloat(data[i].status_code); 
+                            var dataValue = parseInt(data[i].status_code); 
                             //find the corresponding state inside the json
                             for (var j = 0; j < json.features.length; j++) {
                                 var jsonState = json.features[j].properties.abbr;
@@ -66,7 +76,8 @@
                                     break;
                                 }
                             }
-                            console.log(dataState)
+                            
+                            //console.log(dataValue)
                         }
                         //bind data and create a path per json feature
                         svg.selectAll('path')
@@ -82,18 +93,27 @@
                                    //if value exists..
                                    return color(status_code);
                                } else{
-                                   //if value is undefined
-                                   return '#bababa';
+                                   //if value is undefined in this case the banned category is zero!!!
+                                   return '#000';
                                }
+                           })
+                           //hover interactivity
+                           .on("mouseover",function(d) {
+    	                    console.log("hover action", d3.select(d));
+    	                     d3.select(this)
+      	                        .classed("active",true)
+                	        })
+            	           .on("mouseout",function(d){
+    	                    d3.select(this)
+      	                       .classed("active",false)
+
                            });
 
                     });
             });
 
-
-
+       
         </script>
-
 
     </body>
 
