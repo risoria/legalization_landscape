@@ -21,9 +21,39 @@
                 stroke: #000;
                 stroke-width: 2px;
             }
-        </style>
+            div.tooltip{
+                position: absolute;
+                font-size: 18px;
+                width: auto;
+                height: auto;
+                pointer-events: none;
+                padding: 2px;
+                background-color: rgb(255, 255, 255);
+            }
+            #textbox {
+                position: absolute;
+                top: 550px;
+                left: 485px;
+                width: 350px;
+                height: 250px;
+            }
+            #textbox text p {
+                font-family: Helvetica;
+                font-size: 0.9em;
+                margin: 0;
+            }
+            svg{
+                font-family: sans-serif;
+                font-weight: bolder;
+                font-size: 20px;
+                fill: black;
+            }
+    </style>
     <body>
+        <div id= tooltip></div>
+        <div id= textbox></div>
         <script>
+            
             var width = 980;
             var height = 650;
 
@@ -36,7 +66,6 @@
 
             //Data and color scale
             var color = d3.scaleQuantize()
-                            //.domain([0,6])
                             //         decrim  | lim med | ban | mleg audecrim | medical | both
                             .range(['#fff','#bababa','#ff94a0','#97999B','#c7eae5','#ff3366','#00949a'])
                                
@@ -47,6 +76,13 @@
                         .append('svg')
                         .attr('width', width)
                         .attr("height", height);
+                        
+                svg.append('text')
+                   .attr('x', 500)
+                   .attr('y', 50)
+                   .text(function(d){
+                       return "Legalization Landscape in the USA"
+                   })           
 
 
 
@@ -63,15 +99,22 @@
                         for (var i = 0; i < data.length; i++) {
                             //grab state name from csv
                             var dataState = data[i].id;
+                            var dataStateName = data[i].state;
+                            var legalStatus = data[i].legalization_status;
                             console.log(dataState)
+                           
                             //grab value to visualize from csv and convert to float
                             var dataValue = parseInt(data[i].status_code); 
+                            var dataStateName = data[i].legalization_status;
                             //find the corresponding state inside the json
                             for (var j = 0; j < json.features.length; j++) {
                                 var jsonState = json.features[j].properties.abbr;
                                 if (dataState == jsonState) {
                                     //copy the data value into json
+                                 
                                     json.features[j].properties.status_code = dataValue;
+                                    json.features[j].properties.state = dataStateName;
+                                    //console.log(dataStateName)
                                     //stop looking through json
                                     break;
                                 }
@@ -99,11 +142,37 @@
                            })
                            //hover interactivity
                            .on("mouseover",function(d) {
-    	                    console.log("hover action", d3.select(d));
+                            tooltip.transition()
+                                   .duration(200)
+                                   .style("opacity", 0.9);
+                               tooltip.html(d.properties.abbr)
+                                   .style("left", (d3.event.pageX)+ "px")
+                                   .style("top", (d3.event.pageY - 28) + "px")
+                                
+
+                                //now add labels on the map
+                                var prop = d.properties;
+                                var labels = "<p><strong>Status: </strong>" + prop.state + "</p>";
+
+                                d3.select("#textbox")
+                                    .html("")
+                                    .append("text")
+                                    .html(labels)
+                    
+                              
+
+    	                    //console.log("hover action", d3.select(d));
     	                     d3.select(this)
       	                        .classed("active",true)
                 	        })
             	           .on("mouseout",function(d){
+                            tooltip.transition()    
+                                   .duration(200)    
+                                   .style("opacity", 0); 
+                                d3.select("#textbox")
+                                    .html("")
+                                    .append("text")
+                                    .html()
     	                    d3.select(this)
       	                       .classed("active",false)
 
@@ -111,6 +180,10 @@
 
                     });
             });
+            //add tooltips
+            var tooltip = d3.select("body").append("div")
+                            .attr("class", "tooltip")
+                            .style("opacity", 0);
 
        
         </script>
@@ -119,3 +192,4 @@
 
 
 </html>
+
