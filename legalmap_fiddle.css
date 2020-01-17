@@ -1,0 +1,56 @@
+path {
+                fill-opacity: 0.8;
+                stroke: #fff;
+                stroke-width:0.7px;
+            }
+            path.active {
+                fill-opacity: 1;
+                stroke: #000;
+                stroke-width: 2px;
+            }
+            div.tooltip{
+                position: absolute;
+                font-size: 18px;
+                width: auto;
+                height: auto;
+                pointer-events: none;
+                padding: 2px;
+                background-color: rgb(255, 255, 255);
+            }
+            #textbox {
+                position: absolute;
+                top: 550px;
+                left: 485px;
+                width: 350px;
+                height: 250px;
+            }
+            #textbox text p {
+                font-family: Helvetica;
+                font-size: 0.9em;
+                margin: 0;
+            }
+            svg{
+                font-family: sans-serif;
+                font-weight: bolder;
+                font-size: 20px;
+                fill: black;
+            }
+            .pan rect{
+                fill: black;
+                opacity: 0.2;
+            }
+            .pan text{
+                fill: black;
+                font-size:18px;
+                text-anchor: middle;
+            }
+            .pan:hover rect,
+            .pan:hover text{
+                fill: blue;
+            }
+            #toggleContainer {
+                text-align: center;
+                position: relative;
+                top: 500px;
+                bottom: 450px;
+            }
